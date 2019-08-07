@@ -47,6 +47,18 @@
 		return inputData._OLSKThrottleTimeoutID;
 	};
 
+	//_ OLSKThrottleSkip
+
+	exports.OLSKThrottleSkip = function(inputData) {
+		if (!exports.OLSKThrottleInputDataIsThrottleObject(inputData)) {
+			throw new Error('OLSKErrorInputInvalid');
+		}
+
+		clearTimeout(inputData._OLSKThrottleTimeoutID);
+		
+		inputData.OLSKThrottleCallback();
+	};
+
 	Object.defineProperty(exports, '__esModule', {
 		value: true
 	});
