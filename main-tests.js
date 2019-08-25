@@ -185,3 +185,46 @@ describe('OLSKThrottleSkip', function testOLSKThrottleSkip() {
 	});
 
 });
+
+describe('OLSKThrottleMappedTimeoutFor', function testOLSKThrottleMappedTimeoutFor() {
+
+	it('throws error if param1 not object', function() {
+		assert.throws(function() {
+			mainModule.OLSKThrottleMappedTimeoutFor(null, '', function () {}, null);
+		}, /OLSKErrorInputInvalid/);
+	});
+
+	it('throws error if param2 not string', function() {
+		assert.throws(function() {
+			mainModule.OLSKThrottleMappedTimeoutFor({}, null, function () {}, null);
+		}, /OLSKErrorInputInvalid/);
+	});
+
+	it('throws error if param3 not function', function() {
+		assert.throws(function() {
+			mainModule.OLSKThrottleMappedTimeoutFor({}, '', null, null);
+		}, /OLSKErrorInputInvalid/);
+	});
+
+	it('throws error if param3 not defined', function() {
+		assert.throws(function() {
+			mainModule.OLSKThrottleMappedTimeoutFor({}, '', function () {}, undefined);
+		}, /OLSKErrorInputInvalid/);
+	});
+
+	it('returns output of OLSKThrottleTimeoutFor', function() {
+		assert.strictEqual(mainModule.OLSKThrottleMappedTimeoutFor({}, '', function() { return kTest.StubThrottleObjectValid() }, null).constructor.name, 'Timeout');
+	});
+
+	context('param3', function () {
+
+		it('passes param4', function() {
+			mainModule.OLSKThrottleMappedTimeoutFor({}, '', function(inputData) {
+				assert.strictEqual(inputData, 'alfa');
+				return kTest.StubThrottleObjectValid();
+			}, 'alfa');
+		});
+	
+	});
+
+});

@@ -63,4 +63,30 @@
 		value: true
 	});
 
+	//_ OLSKThrottleMappedTimeoutFor
+
+	exports.OLSKThrottleMappedTimeoutFor = function(param1, param2, param3, param4) {
+		if (typeof param1 !== 'object' || param1 === null) {
+			throw new Error('OLSKErrorInputInvalid');
+		}
+
+		if (typeof param2 !== 'string') {
+			throw new Error('OLSKErrorInputInvalid');
+		}
+
+		if (typeof param3 !== 'function') {
+			throw new Error('OLSKErrorInputInvalid');
+		}
+
+		if (typeof param4 === 'undefined') {
+			throw new Error('OLSKErrorInputInvalid');
+		}
+
+		if (!param1[param2]) {
+			param1[param2] = param3(param4);	
+		}
+
+		return exports.OLSKThrottleTimeoutFor(param1[param2]);
+	};
+
 })));
