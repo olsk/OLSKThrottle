@@ -57,7 +57,7 @@ describe('OLSKThrottleTimeoutFor', function testOLSKThrottleTimeoutFor() {
 	it('throws error if not valid', function() {
 		assert.throws(function() {
 			mainModule.OLSKThrottleTimeoutFor({});
-		}, /OLSKErrorInputInvalid/);
+		}, /OLSKErrorInputNotValid/);
 	});
 
 	it('returns timeoutID', function() {
@@ -124,7 +124,7 @@ describe('OLSKThrottleSkip', function testOLSKThrottleSkip() {
 	it('throws error if not valid', function() {
 		assert.throws(function() {
 			mainModule.OLSKThrottleSkip({});
-		}, /OLSKErrorInputInvalid/);
+		}, /OLSKErrorInputNotValid/);
 	});
 
 	it('returns undefined', function() {
@@ -191,25 +191,25 @@ describe('OLSKThrottleMappedTimeoutFor', function testOLSKThrottleMappedTimeoutF
 	it('throws error if param1 not object', function() {
 		assert.throws(function() {
 			mainModule.OLSKThrottleMappedTimeoutFor(null, '', function () {}, null);
-		}, /OLSKErrorInputInvalid/);
+		}, /OLSKErrorInputNotValid/);
 	});
 
 	it('throws error if param2 not string', function() {
 		assert.throws(function() {
 			mainModule.OLSKThrottleMappedTimeoutFor({}, null, function () {}, null);
-		}, /OLSKErrorInputInvalid/);
+		}, /OLSKErrorInputNotValid/);
 	});
 
 	it('throws error if param3 not function', function() {
 		assert.throws(function() {
 			mainModule.OLSKThrottleMappedTimeoutFor({}, '', null, null);
-		}, /OLSKErrorInputInvalid/);
+		}, /OLSKErrorInputNotValid/);
 	});
 
 	it('throws error if param3 not defined', function() {
 		assert.throws(function() {
 			mainModule.OLSKThrottleMappedTimeoutFor({}, '', function () {}, undefined);
-		}, /OLSKErrorInputInvalid/);
+		}, /OLSKErrorInputNotValid/);
 	});
 
 	it('returns output of OLSKThrottleTimeoutFor', function() {

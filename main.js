@@ -33,7 +33,7 @@
 
 	exports.OLSKThrottleTimeoutFor = function(inputData, callbackInput) {
 		if (!exports.OLSKThrottleInputDataIsThrottleObject(inputData)) {
-			throw new Error('OLSKErrorInputInvalid');
+			throw new Error('OLSKErrorInputNotValid');
 		}
 
 		if (inputData._OLSKThrottleTimeoutID) {
@@ -51,7 +51,7 @@
 
 	exports.OLSKThrottleSkip = function(inputData) {
 		if (!exports.OLSKThrottleInputDataIsThrottleObject(inputData)) {
-			throw new Error('OLSKErrorInputInvalid');
+			throw new Error('OLSKErrorInputNotValid');
 		}
 
 		clearTimeout(inputData._OLSKThrottleTimeoutID);
@@ -67,19 +67,19 @@
 
 	exports.OLSKThrottleMappedTimeoutFor = function(param1, param2, param3, param4) {
 		if (typeof param1 !== 'object' || param1 === null) {
-			throw new Error('OLSKErrorInputInvalid');
+			throw new Error('OLSKErrorInputNotValid');
 		}
 
 		if (typeof param2 !== 'string') {
-			throw new Error('OLSKErrorInputInvalid');
+			throw new Error('OLSKErrorInputNotValid');
 		}
 
 		if (typeof param3 !== 'function') {
-			throw new Error('OLSKErrorInputInvalid');
+			throw new Error('OLSKErrorInputNotValid');
 		}
 
 		if (typeof param4 === 'undefined') {
-			throw new Error('OLSKErrorInputInvalid');
+			throw new Error('OLSKErrorInputNotValid');
 		}
 
 		if (!param1[param2]) {
