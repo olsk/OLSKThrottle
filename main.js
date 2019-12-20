@@ -23,7 +23,7 @@
 			return true;
 		},
 
-		OLSKThrottleTimeoutFor (inputData, callbackInput) {
+		OLSKThrottleTimeoutFor (inputData) {
 			if (!exports.OLSKThrottleInputDataIsThrottleObject(inputData)) {
 				throw new Error('OLSKErrorInputNotValid');
 			}
