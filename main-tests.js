@@ -117,6 +117,25 @@ describe('OLSKThrottleTimeoutFor', function test_OLSKThrottleTimeoutFor() {
 		deepEqual(item._OLSKTestingData.length, 0);
 	});
 
+	it('passes OLSKThrottleInput', async function() {
+		const item = kTest.StubThrottleObjectValid();
+
+		Object.assign(item, {
+			OLSKThrottleInput: 'alfa',
+			OLSKThrottleCallback (inputData) {
+				item._OLSKTestingData.push(inputData);
+			},
+		});
+
+		mainModule.OLSKThrottleTimeoutFor(item);
+
+		await (new Promise(function (res, rej) {
+			return setTimeout(res, kTest.uDefaultDurationForMultiple(1.1));
+		}));
+
+		deepEqual(item._OLSKTestingData, ['alfa']);
+	});
+
 });
 
 describe('OLSKThrottleSkip', function test_OLSKThrottleSkip() {

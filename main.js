@@ -33,7 +33,7 @@
 			}
 
 			inputData._OLSKThrottleTimeoutID = setTimeout(function () {
-				inputData.OLSKThrottleCallback();
+				mod._OLSKThrottleFire(inputData);
 			}, inputData.OLSKThrottleDuration);
 
 			return inputData._OLSKThrottleTimeoutID;
@@ -46,7 +46,11 @@
 
 			clearTimeout(inputData._OLSKThrottleTimeoutID);
 			
-			inputData.OLSKThrottleCallback();
+			mod._OLSKThrottleFire(inputData);
+		},
+
+		_OLSKThrottleFire (inputData) {
+			inputData.OLSKThrottleCallback(inputData.OLSKThrottleInput);
 		},
 
 		OLSKThrottleMappedTimeoutFor (param1, param2, param3, param4) {
