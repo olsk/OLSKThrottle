@@ -9,15 +9,15 @@ const assert = require('assert');
 const mainModule = require('./main');
 
 const kTest = {
-	kDefaultDuration: function () {
+	kDefaultDuration () {
 		return 100;
 	},
-	uDefaultDurationForMultiple: function(inputData) {
+	uDefaultDurationForMultiple (inputData) {
 		return kTest.kDefaultDuration() * inputData;
 	},
-	StubThrottleObjectValid: function() {
-		let outputData = {
-			OLSKThrottleCallback: function() {
+	StubThrottleObjectValid () {
+		const outputData = {
+			OLSKThrottleCallback () {
 				return outputData._OLSKTestingData.push(new Date());
 			},
 			OLSKThrottleDuration: kTest.kDefaultDuration(),
@@ -28,7 +28,7 @@ const kTest = {
 	},
 };
 
-describe('OLSKThrottleInputDataIsThrottleObject', function testOLSKThrottleInputDataIsThrottleObject() {
+describe('OLSKThrottleInputDataIsThrottleObject', function test_OLSKThrottleInputDataIsThrottleObject() {
 
 	it('returns false if not object', function() {
 		assert.strictEqual(mainModule.OLSKThrottleInputDataIsThrottleObject(null), false);
@@ -52,7 +52,7 @@ describe('OLSKThrottleInputDataIsThrottleObject', function testOLSKThrottleInput
 
 });
 
-describe('OLSKThrottleTimeoutFor', function testOLSKThrottleTimeoutFor() {
+describe('OLSKThrottleTimeoutFor', function test_OLSKThrottleTimeoutFor() {
 
 	it('throws error if not valid', function() {
 		assert.throws(function() {
@@ -65,12 +65,12 @@ describe('OLSKThrottleTimeoutFor', function testOLSKThrottleTimeoutFor() {
 	});
 
 	it('sets _OLSKThrottleTimeoutID to timeoutID', function() {
-		let item = kTest.StubThrottleObjectValid();
+		const item = kTest.StubThrottleObjectValid();
 		assert.deepEqual(mainModule.OLSKThrottleTimeoutFor(item), item._OLSKThrottleTimeoutID);
 	});
 
 	it('calls OLSKThrottleCallback at OLSKThrottleDuration', function(done) {
-		let item = kTest.StubThrottleObjectValid();
+		const item = kTest.StubThrottleObjectValid();
 
 		mainModule.OLSKThrottleTimeoutFor(item);
 
@@ -82,7 +82,7 @@ describe('OLSKThrottleTimeoutFor', function testOLSKThrottleTimeoutFor() {
 	});
 
 	it('restarts timer if called again be stopped via clearInterval', function(done) {
-		let item = kTest.StubThrottleObjectValid();
+		const item = kTest.StubThrottleObjectValid();
 
 		mainModule.OLSKThrottleTimeoutFor(item);
 
@@ -102,7 +102,7 @@ describe('OLSKThrottleTimeoutFor', function testOLSKThrottleTimeoutFor() {
 	});
 
 	it('can be stopped via clearInterval', function(done) {
-		let item = kTest.StubThrottleObjectValid();
+		const item = kTest.StubThrottleObjectValid();
 
 		mainModule.OLSKThrottleTimeoutFor(item);
 
@@ -119,7 +119,7 @@ describe('OLSKThrottleTimeoutFor', function testOLSKThrottleTimeoutFor() {
 
 });
 
-describe('OLSKThrottleSkip', function testOLSKThrottleSkip() {
+describe('OLSKThrottleSkip', function test_OLSKThrottleSkip() {
 
 	it('throws error if not valid', function() {
 		assert.throws(function() {
@@ -132,7 +132,7 @@ describe('OLSKThrottleSkip', function testOLSKThrottleSkip() {
 	});
 
 	it('calls OLSKThrottleCallback', function(done) {
-		let item = kTest.StubThrottleObjectValid();
+		const item = kTest.StubThrottleObjectValid();
 
 		mainModule.OLSKThrottleTimeoutFor(item);
 		mainModule.OLSKThrottleSkip(item);
@@ -149,7 +149,7 @@ describe('OLSKThrottleSkip', function testOLSKThrottleSkip() {
 	});
 
 	it('restarts timer if called again be stopped via clearInterval', function(done) {
-		let item = kTest.StubThrottleObjectValid();
+		const item = kTest.StubThrottleObjectValid();
 
 		mainModule.OLSKThrottleTimeoutFor(item);
 
@@ -169,7 +169,7 @@ describe('OLSKThrottleSkip', function testOLSKThrottleSkip() {
 	});
 
 	it('can be stopped via clearInterval', function(done) {
-		let item = kTest.StubThrottleObjectValid();
+		const item = kTest.StubThrottleObjectValid();
 
 		mainModule.OLSKThrottleTimeoutFor(item);
 
@@ -186,7 +186,7 @@ describe('OLSKThrottleSkip', function testOLSKThrottleSkip() {
 
 });
 
-describe('OLSKThrottleMappedTimeoutFor', function testOLSKThrottleMappedTimeoutFor() {
+describe('OLSKThrottleMappedTimeoutFor', function test_OLSKThrottleMappedTimeoutFor() {
 
 	it('throws error if param1 not object', function() {
 		assert.throws(function() {
