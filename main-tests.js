@@ -179,7 +179,7 @@ describe('OLSKThrottleSkip', function test_OLSKThrottleSkip() {
 
 });
 
-describe('OLSKThrottleMappedTimeoutFor', function test_OLSKThrottleMappedTimeoutFor() {
+describe.skip('OLSKThrottleMappedTimeoutFor', function test_OLSKThrottleMappedTimeoutFor() {
 
 	it('throws error if param1 not object', function() {
 		throws(function() {

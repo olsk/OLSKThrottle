@@ -49,6 +49,7 @@ const mod = {
 	},
 
 	OLSKThrottleMappedTimeoutFor (param1, param2, param3, param4) {
+		console.log('OLSKThrottleMappedTimeoutFor DEPRECATED');
 		if (typeof param1 !== 'object' || param1 === null) {
 			throw new Error('OLSKErrorInputNotValid');
 		}
