@@ -221,3 +221,54 @@ describe('OLSKThrottleMappedTimeoutFor', function test_OLSKThrottleMappedTimeout
 	});
 
 });
+
+describe('OLSKThrottleMappedTimeout', function test_OLSKThrottleMappedTimeout() {
+
+	it('throws error if param1 not object', function() {
+		throws(function() {
+			mainModule.OLSKThrottleMappedTimeout(null, '', kTest.StubThrottleObjectValid());
+		}, /OLSKErrorInputNotValid/);
+	});
+
+	it('throws error if param2 not string', function() {
+		throws(function() {
+			mainModule.OLSKThrottleMappedTimeout({}, null, kTest.StubThrottleObjectValid());
+		}, /OLSKErrorInputNotValid/);
+	});
+
+	it('throws error if param3 not valid', function() {
+		throws(function() {
+			mainModule.OLSKThrottleMappedTimeout({}, '', {});
+		}, /OLSKErrorInputNotValid/);
+	});
+
+	it('returns output of OLSKThrottleTimeoutFor', function() {
+		const item = kTest.StubThrottleObjectValid();
+		deepEqual(mainModule.OLSKThrottleMappedTimeout({}, '', item), item._OLSKThrottleTimeoutID);
+	});
+
+	it('uses entry if exists', function() {
+		const item = kTest.StubThrottleObjectValid();
+		const map = {
+			alfa: item,
+		};
+
+		mainModule.OLSKThrottleMappedTimeout(map, 'alfa', kTest.StubThrottleObjectValid());
+		deepEqual(map.alfa, item);
+	});
+
+	it('clears entry after OLSKThrottleDuration', async function() {
+		const map = {};
+		const item = kTest.StubThrottleObjectValid();
+
+		mainModule.OLSKThrottleMappedTimeout(map, 'alfa', item);
+		deepEqual(typeof map.alfa, 'object');
+
+		await (new Promise(function (res, rej) {
+			return setTimeout(res, kTest.uDefaultDurationForMultiple(1.1));
+		}));
+
+		deepEqual(map.alfa, undefined);
+	});
+
+});
