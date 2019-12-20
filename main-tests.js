@@ -69,52 +69,58 @@ describe('OLSKThrottleTimeoutFor', function test_OLSKThrottleTimeoutFor() {
 		assert.deepEqual(mainModule.OLSKThrottleTimeoutFor(item), item._OLSKThrottleTimeoutID);
 	});
 
-	it('calls OLSKThrottleCallback at OLSKThrottleDuration', function(done) {
+	it('calls OLSKThrottleCallback at OLSKThrottleDuration', async function() {
 		const item = kTest.StubThrottleObjectValid();
 
 		mainModule.OLSKThrottleTimeoutFor(item);
 
-		setTimeout(function() {
-			assert.strictEqual(item._OLSKTestingData.length, 1);
+		await (new Promise(function (res, rej) {
+			return setTimeout(res, kTest.uDefaultDurationForMultiple(1.1));
+		}));
 
-			done();
-		}, kTest.uDefaultDurationForMultiple(1.1));
+		assert.strictEqual(item._OLSKTestingData.length, 1);
 	});
 
-	it('restarts timer if called again be stopped via clearInterval', function(done) {
+	it('restarts timer if called again', async function() {
 		const item = kTest.StubThrottleObjectValid();
 
 		mainModule.OLSKThrottleTimeoutFor(item);
 
-		setTimeout(function() {
-			mainModule.OLSKThrottleTimeoutFor(item);
+		await (new Promise(function (res, rej) {
+			return setTimeout(res, kTest.uDefaultDurationForMultiple(0.5));
+		}));
 
-			setTimeout(function() {
-				assert.strictEqual(item._OLSKTestingData.length, 0);
+		mainModule.OLSKThrottleTimeoutFor(item);
 
-				setTimeout(function() {
-					assert.strictEqual(item._OLSKTestingData.length, 1);
+		await (new Promise(function (res, rej) {
+			return setTimeout(res, kTest.uDefaultDurationForMultiple(0.6));
+		}));
 
-					done();
-				}, kTest.uDefaultDurationForMultiple(0.7))
-			}, kTest.uDefaultDurationForMultiple(0.6));
-		}, kTest.uDefaultDurationForMultiple(0.5));
+		assert.strictEqual(item._OLSKTestingData.length, 0);
+
+		await (new Promise(function (res, rej) {
+			return setTimeout(res, kTest.uDefaultDurationForMultiple(0.7));
+		}));
+
+		assert.strictEqual(item._OLSKTestingData.length, 1);
 	});
 
-	it('can be stopped via clearInterval', function(done) {
+	it('can be stopped via clearInterval', async function() {
 		const item = kTest.StubThrottleObjectValid();
 
 		mainModule.OLSKThrottleTimeoutFor(item);
 
-		setTimeout(function() {
-			clearInterval(item._OLSKThrottleTimeoutID);
+		await (new Promise(function (res, rej) {
+			return setTimeout(res, kTest.uDefaultDurationForMultiple(0.5));
+		}));
 
-			setTimeout(function() {
-				assert.strictEqual(item._OLSKTestingData.length, 0);
+		clearInterval(item._OLSKThrottleTimeoutID);
 
-				done();
-			}, kTest.uDefaultDurationForMultiple(0.6));
-		}, kTest.uDefaultDurationForMultiple(0.5));
+		await (new Promise(function (res, rej) {
+			return setTimeout(res, kTest.uDefaultDurationForMultiple(0.6));
+		}));
+
+		assert.strictEqual(item._OLSKTestingData.length, 0);
 	});
 
 });
@@ -131,57 +137,19 @@ describe('OLSKThrottleSkip', function test_OLSKThrottleSkip() {
 		assert.strictEqual(mainModule.OLSKThrottleSkip(kTest.StubThrottleObjectValid()), undefined);
 	});
 
-	it('calls OLSKThrottleCallback', function(done) {
+	it('calls OLSKThrottleCallback', async function() {
 		const item = kTest.StubThrottleObjectValid();
 
 		mainModule.OLSKThrottleTimeoutFor(item);
 		mainModule.OLSKThrottleSkip(item);
 
-		setTimeout(function() {
-			assert.strictEqual(item._OLSKTestingData.length, 1);
-			
-			setTimeout(function() {
-				assert.strictEqual(item._OLSKTestingData.length, 1);
+		assert.strictEqual(item._OLSKTestingData.length, 1);
 
-				done();
-			}, kTest.uDefaultDurationForMultiple(1.1));
-		}, kTest.uDefaultDurationForMultiple(0.5));
-	});
+		await (new Promise(function (res, rej) {
+			return setTimeout(res, kTest.uDefaultDurationForMultiple(1.1));
+		}));
 
-	it('restarts timer if called again be stopped via clearInterval', function(done) {
-		const item = kTest.StubThrottleObjectValid();
-
-		mainModule.OLSKThrottleTimeoutFor(item);
-
-		setTimeout(function() {
-			mainModule.OLSKThrottleTimeoutFor(item);
-
-			setTimeout(function() {
-				assert.strictEqual(item._OLSKTestingData.length, 0);
-
-				setTimeout(function() {
-					assert.strictEqual(item._OLSKTestingData.length, 1);
-
-					done();
-				}, kTest.uDefaultDurationForMultiple(0.7))
-			}, kTest.uDefaultDurationForMultiple(0.6));
-		}, kTest.uDefaultDurationForMultiple(0.5));
-	});
-
-	it('can be stopped via clearInterval', function(done) {
-		const item = kTest.StubThrottleObjectValid();
-
-		mainModule.OLSKThrottleTimeoutFor(item);
-
-		setTimeout(function() {
-			clearInterval(item._OLSKThrottleTimeoutID);
-
-			setTimeout(function() {
-				assert.strictEqual(item._OLSKTestingData.length, 0);
-
-				done();
-			}, kTest.uDefaultDurationForMultiple(0.6));
-		}, kTest.uDefaultDurationForMultiple(0.5));
+		assert.strictEqual(item._OLSKTestingData.length, 1);
 	});
 
 });
