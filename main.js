@@ -37,6 +37,8 @@ const mod = {
 			throw new Error('OLSKErrorInputNotValid');
 		}
 
+		clearTimeout(inputData._OLSKThrottleTimeoutID);
+		
 		mod._OLSKThrottleFire(inputData);
 	},
 

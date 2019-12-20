@@ -136,6 +136,18 @@ describe('OLSKThrottleTimeoutFor', function test_OLSKThrottleTimeoutFor() {
 		deepEqual(item._OLSKTestingData, ['alfa']);
 	});
 
+	it('clears _OLSKThrottleTimeoutID after OLSKThrottleDuration', async function() {
+		const item = kTest.StubThrottleObjectValid();
+
+		mainModule.OLSKThrottleTimeoutFor(item)
+
+		await (new Promise(function (res, rej) {
+			return setTimeout(res, kTest.uDefaultDurationForMultiple(1.1));
+		}));
+
+		deepEqual(item._OLSKThrottleTimeoutID, undefined);
+	});
+
 });
 
 describe('OLSKThrottleSkip', function test_OLSKThrottleSkip() {
