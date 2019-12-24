@@ -22,26 +22,26 @@ const kTest = {
 	},
 };
 
-describe('OLSKThrottleInputDataIsThrottleObject', function test_OLSKThrottleInputDataIsThrottleObject() {
+describe('OLSKThrottleIsValid', function test_OLSKThrottleIsValid() {
 
 	it('returns false if not object', function() {
-		deepEqual(mainModule.OLSKThrottleInputDataIsThrottleObject(null), false);
+		deepEqual(mainModule.OLSKThrottleIsValid(null), false);
 	});
 
 	it('returns false if OLSKThrottleCallback not function', function() {
-		deepEqual(mainModule.OLSKThrottleInputDataIsThrottleObject(Object.assign(kTest.StubThrottleObjectValid(), {
+		deepEqual(mainModule.OLSKThrottleIsValid(Object.assign(kTest.StubThrottleObjectValid(), {
 			OLSKThrottleCallback: true,
 		})), false);
 	});
 
 	it('returns false if OLSKThrottleDuration not number', function() {
-		deepEqual(mainModule.OLSKThrottleInputDataIsThrottleObject(Object.assign(kTest.StubThrottleObjectValid(), {
+		deepEqual(mainModule.OLSKThrottleIsValid(Object.assign(kTest.StubThrottleObjectValid(), {
 			OLSKThrottleDuration: '1',
 		})), false);
 	});
 
 	it('returns true', function() {
-		deepEqual(mainModule.OLSKThrottleInputDataIsThrottleObject(kTest.StubThrottleObjectValid()), true);
+		deepEqual(mainModule.OLSKThrottleIsValid(kTest.StubThrottleObjectValid()), true);
 	});
 
 });

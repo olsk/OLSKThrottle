@@ -1,6 +1,6 @@
 const mod = {
 
-	OLSKThrottleInputDataIsThrottleObject (inputData) {
+	OLSKThrottleIsValid (inputData) {
 		if (typeof inputData !== 'object' || inputData === null) {
 			return false;
 		}
@@ -17,7 +17,7 @@ const mod = {
 	},
 
 	OLSKThrottleTimeoutFor (inputData) {
-		if (!mod.OLSKThrottleInputDataIsThrottleObject(inputData)) {
+		if (!mod.OLSKThrottleIsValid(inputData)) {
 			throw new Error('OLSKErrorInputNotValid');
 		}
 
@@ -33,7 +33,7 @@ const mod = {
 	},
 
 	OLSKThrottleSkip (inputData) {
-		if (!mod.OLSKThrottleInputDataIsThrottleObject(inputData)) {
+		if (!mod.OLSKThrottleIsValid(inputData)) {
 			throw new Error('OLSKErrorInputNotValid');
 		}
 
@@ -57,7 +57,7 @@ const mod = {
 			throw new Error('OLSKErrorInputNotValid');
 		}
 
-		if (!mod.OLSKThrottleInputDataIsThrottleObject(param3)) {
+		if (!mod.OLSKThrottleIsValid(param3)) {
 			throw new Error('OLSKErrorInputNotValid');
 		}
 
