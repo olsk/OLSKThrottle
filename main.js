@@ -43,7 +43,7 @@ const mod = {
 	},
 
 	_OLSKThrottleFire (inputData) {
-		inputData.OLSKThrottleCallback(inputData.OLSKThrottleInput);
+		inputData.OLSKThrottleCallback();
 
 		delete inputData._OLSKThrottleTimeoutID;
 	},
