@@ -48,31 +48,6 @@ const mod = {
 		delete inputData._OLSKThrottleTimeoutID;
 	},
 
-	OLSKThrottleMappedTimeoutFor (param1, param2, param3, param4) {
-		console.log('OLSKThrottleMappedTimeoutFor DEPRECATED');
-		if (typeof param1 !== 'object' || param1 === null) {
-			throw new Error('OLSKErrorInputNotValid');
-		}
-
-		if (typeof param2 !== 'string') {
-			throw new Error('OLSKErrorInputNotValid');
-		}
-
-		if (typeof param3 !== 'function') {
-			throw new Error('OLSKErrorInputNotValid');
-		}
-
-		if (typeof param4 === 'undefined') {
-			throw new Error('OLSKErrorInputNotValid');
-		}
-
-		if (!param1[param2]) {
-			param1[param2] = param3(param4);	
-		}
-
-		return mod.OLSKThrottleTimeoutFor(param1[param2]);
-	},
-
 	OLSKThrottleMappedTimeout (param1, param2, param3) {
 		if (typeof param1 !== 'object' || param1 === null) {
 			throw new Error('OLSKErrorInputNotValid');
