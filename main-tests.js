@@ -9,7 +9,7 @@ const kTest = {
 	uDefaultDurationForMultiple (inputData) {
 		return kTest.kDefaultDuration() * inputData;
 	},
-	StubThrottleObjectValid () {
+	StubThrottleObjectValid (inputData = {}) {
 		const outputData = {
 			OLSKThrottleCallback () {
 				return outputData._OLSKTestingData.push(new Date());
@@ -18,7 +18,7 @@ const kTest = {
 			_OLSKTestingData: [],
 		};
 
-		return outputData;
+		return Object.assign(outputData, inputData);
 	},
 };
 
@@ -139,10 +139,6 @@ describe('OLSKThrottleSkip', function test_OLSKThrottleSkip() {
 		}, /OLSKErrorInputNotValid/);
 	});
 
-	it('returns undefined', function() {
-		deepEqual(mainModule.OLSKThrottleSkip(kTest.StubThrottleObjectValid()), undefined);
-	});
-
 	it('calls OLSKThrottleCallback', async function() {
 		const item = kTest.StubThrottleObjectValid();
 
@@ -156,6 +152,15 @@ describe('OLSKThrottleSkip', function test_OLSKThrottleSkip() {
 		}));
 
 		deepEqual(item._OLSKTestingData.length, 1);
+	});
+
+	it('returns OLSKThrottleCallback', function() {
+		const item = Math.random().toString();
+		deepEqual(mainModule.OLSKThrottleSkip(kTest.StubThrottleObjectValid({
+			OLSKThrottleCallback () {
+				return item;
+			},
+		})), item);
 	});
 
 });

@@ -39,13 +39,13 @@ const mod = {
 
 		clearTimeout(inputData._OLSKThrottleTimeoutID);
 		
-		mod._OLSKThrottleFire(inputData);
+		return mod._OLSKThrottleFire(inputData);
 	},
 
 	_OLSKThrottleFire (inputData) {
-		inputData.OLSKThrottleCallback();
-
 		delete inputData._OLSKThrottleTimeoutID;
+		
+		return inputData.OLSKThrottleCallback();
 	},
 
 	OLSKThrottleMappedTimeout (param1, param2, param3) {
