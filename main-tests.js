@@ -1,6 +1,6 @@
 const { throws, deepEqual } = require('assert');
 
-const mainModule = require('./main.js');
+const mod = require('./main.js');
 
 const kTest = {
 	kDefaultDuration () {
@@ -25,23 +25,23 @@ const kTest = {
 describe('OLSKThrottleIsValid', function test_OLSKThrottleIsValid() {
 
 	it('returns false if not object', function() {
-		deepEqual(mainModule.OLSKThrottleIsValid(null), false);
+		deepEqual(mod.OLSKThrottleIsValid(null), false);
 	});
 
 	it('returns false if OLSKThrottleCallback not function', function() {
-		deepEqual(mainModule.OLSKThrottleIsValid(Object.assign(kTest.StubThrottleObjectValid(), {
+		deepEqual(mod.OLSKThrottleIsValid(Object.assign(kTest.StubThrottleObjectValid(), {
 			OLSKThrottleCallback: true,
 		})), false);
 	});
 
 	it('returns false if OLSKThrottleDuration not number', function() {
-		deepEqual(mainModule.OLSKThrottleIsValid(Object.assign(kTest.StubThrottleObjectValid(), {
+		deepEqual(mod.OLSKThrottleIsValid(Object.assign(kTest.StubThrottleObjectValid(), {
 			OLSKThrottleDuration: '1',
 		})), false);
 	});
 
 	it('returns true', function() {
-		deepEqual(mainModule.OLSKThrottleIsValid(kTest.StubThrottleObjectValid()), true);
+		deepEqual(mod.OLSKThrottleIsValid(kTest.StubThrottleObjectValid()), true);
 	});
 
 });
@@ -50,23 +50,23 @@ describe('OLSKThrottleTimeoutFor', function test_OLSKThrottleTimeoutFor() {
 
 	it('throws error if not valid', function() {
 		throws(function() {
-			mainModule.OLSKThrottleTimeoutFor({});
+			mod.OLSKThrottleTimeoutFor({});
 		}, /OLSKErrorInputNotValid/);
 	});
 
 	it('returns timeoutID', function() {
-		deepEqual(mainModule.OLSKThrottleTimeoutFor(kTest.StubThrottleObjectValid()).constructor.name, 'Timeout');
+		deepEqual(mod.OLSKThrottleTimeoutFor(kTest.StubThrottleObjectValid()).constructor.name, 'Timeout');
 	});
 
 	it('sets _OLSKThrottleTimeoutID to timeoutID', function() {
 		const item = kTest.StubThrottleObjectValid();
-		deepEqual(mainModule.OLSKThrottleTimeoutFor(item), item._OLSKThrottleTimeoutID);
+		deepEqual(mod.OLSKThrottleTimeoutFor(item), item._OLSKThrottleTimeoutID);
 	});
 
 	it('calls OLSKThrottleCallback at OLSKThrottleDuration', async function() {
 		const item = kTest.StubThrottleObjectValid();
 
-		mainModule.OLSKThrottleTimeoutFor(item);
+		mod.OLSKThrottleTimeoutFor(item);
 
 		await (new Promise(function (res, rej) {
 			return setTimeout(res, kTest.uDefaultDurationForMultiple(1.1));
@@ -78,13 +78,13 @@ describe('OLSKThrottleTimeoutFor', function test_OLSKThrottleTimeoutFor() {
 	it('restarts timer if called again', async function() {
 		const item = kTest.StubThrottleObjectValid();
 
-		mainModule.OLSKThrottleTimeoutFor(item);
+		mod.OLSKThrottleTimeoutFor(item);
 
 		await (new Promise(function (res, rej) {
 			return setTimeout(res, kTest.uDefaultDurationForMultiple(0.5));
 		}));
 
-		mainModule.OLSKThrottleTimeoutFor(item);
+		mod.OLSKThrottleTimeoutFor(item);
 
 		await (new Promise(function (res, rej) {
 			return setTimeout(res, kTest.uDefaultDurationForMultiple(0.6));
@@ -102,7 +102,7 @@ describe('OLSKThrottleTimeoutFor', function test_OLSKThrottleTimeoutFor() {
 	it('can be stopped via clearInterval', async function() {
 		const item = kTest.StubThrottleObjectValid();
 
-		mainModule.OLSKThrottleTimeoutFor(item);
+		mod.OLSKThrottleTimeoutFor(item);
 
 		await (new Promise(function (res, rej) {
 			return setTimeout(res, kTest.uDefaultDurationForMultiple(0.5));
@@ -120,7 +120,7 @@ describe('OLSKThrottleTimeoutFor', function test_OLSKThrottleTimeoutFor() {
 	it('clears _OLSKThrottleTimeoutID after OLSKThrottleDuration', async function() {
 		const item = kTest.StubThrottleObjectValid();
 
-		mainModule.OLSKThrottleTimeoutFor(item)
+		mod.OLSKThrottleTimeoutFor(item)
 
 		await (new Promise(function (res, rej) {
 			return setTimeout(res, kTest.uDefaultDurationForMultiple(1.1));
@@ -135,15 +135,15 @@ describe('OLSKThrottleSkip', function test_OLSKThrottleSkip() {
 
 	it('throws error if not valid', function() {
 		throws(function() {
-			mainModule.OLSKThrottleSkip({});
+			mod.OLSKThrottleSkip({});
 		}, /OLSKErrorInputNotValid/);
 	});
 
 	it('calls OLSKThrottleCallback', async function() {
 		const item = kTest.StubThrottleObjectValid();
 
-		mainModule.OLSKThrottleTimeoutFor(item);
-		mainModule.OLSKThrottleSkip(item);
+		mod.OLSKThrottleTimeoutFor(item);
+		mod.OLSKThrottleSkip(item);
 
 		deepEqual(item._OLSKTestingData.length, 1);
 
@@ -156,7 +156,7 @@ describe('OLSKThrottleSkip', function test_OLSKThrottleSkip() {
 
 	it('returns OLSKThrottleCallback', function() {
 		const item = Math.random().toString();
-		deepEqual(mainModule.OLSKThrottleSkip(kTest.StubThrottleObjectValid({
+		deepEqual(mod.OLSKThrottleSkip(kTest.StubThrottleObjectValid({
 			OLSKThrottleCallback () {
 				return item;
 			},
@@ -169,25 +169,25 @@ describe('OLSKThrottleMappedTimeout', function test_OLSKThrottleMappedTimeout() 
 
 	it('throws error if param1 not object', function() {
 		throws(function() {
-			mainModule.OLSKThrottleMappedTimeout(null, '', kTest.StubThrottleObjectValid());
+			mod.OLSKThrottleMappedTimeout(null, '', kTest.StubThrottleObjectValid());
 		}, /OLSKErrorInputNotValid/);
 	});
 
 	it('throws error if param2 not string', function() {
 		throws(function() {
-			mainModule.OLSKThrottleMappedTimeout({}, null, kTest.StubThrottleObjectValid());
+			mod.OLSKThrottleMappedTimeout({}, null, kTest.StubThrottleObjectValid());
 		}, /OLSKErrorInputNotValid/);
 	});
 
 	it('throws error if param3 not valid', function() {
 		throws(function() {
-			mainModule.OLSKThrottleMappedTimeout({}, '', {});
+			mod.OLSKThrottleMappedTimeout({}, '', {});
 		}, /OLSKErrorInputNotValid/);
 	});
 
 	it('returns output of OLSKThrottleTimeoutFor', function() {
 		const item = kTest.StubThrottleObjectValid();
-		deepEqual(mainModule.OLSKThrottleMappedTimeout({}, '', item), item._OLSKThrottleTimeoutID);
+		deepEqual(mod.OLSKThrottleMappedTimeout({}, '', item), item._OLSKThrottleTimeoutID);
 	});
 
 	it('uses entry if exists', function() {
@@ -196,7 +196,7 @@ describe('OLSKThrottleMappedTimeout', function test_OLSKThrottleMappedTimeout() 
 			alfa: item,
 		};
 
-		mainModule.OLSKThrottleMappedTimeout(map, 'alfa', kTest.StubThrottleObjectValid());
+		mod.OLSKThrottleMappedTimeout(map, 'alfa', kTest.StubThrottleObjectValid());
 		deepEqual(map.alfa, item);
 	});
 
@@ -204,7 +204,7 @@ describe('OLSKThrottleMappedTimeout', function test_OLSKThrottleMappedTimeout() 
 		const map = {};
 		const item = kTest.StubThrottleObjectValid();
 
-		mainModule.OLSKThrottleMappedTimeout(map, 'alfa', item);
+		mod.OLSKThrottleMappedTimeout(map, 'alfa', item);
 		deepEqual(typeof map.alfa, 'object');
 
 		await (new Promise(function (res, rej) {
