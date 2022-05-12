@@ -1,79 +1,93 @@
-const mod = {
+(function(global, factory) {
+	typeof exports === 'object' && typeof module !== 'undefined' ? factory(exports) :
+		typeof define === 'function' && define.amd ? define(['exports'], factory) :
+			(factory((global.OLSKThrottle = global.OLSKThrottle || {})));
+}(this, (function(exports) { 'use strict';
 
-	OLSKThrottleIsValid (inputData) {
-		if (typeof inputData !== 'object' || inputData === null) {
-			return false;
-		}
+	const mod = {
 
-		if (typeof inputData.OLSKThrottleCallback !== 'function') {
-			return false;
-		}
+		OLSKThrottleIsValid (inputData) {
+			if (typeof inputData !== 'object' || inputData === null) {
+				return false;
+			}
 
-		if (typeof inputData.OLSKThrottleDuration !== 'number') {
-			return false;
-		}
+			if (typeof inputData.OLSKThrottleCallback !== 'function') {
+				return false;
+			}
 
-		return true;
-	},
+			if (typeof inputData.OLSKThrottleDuration !== 'number') {
+				return false;
+			}
 
-	OLSKThrottleTimeoutFor (inputData) {
-		if (!mod.OLSKThrottleIsValid(inputData)) {
-			throw new Error('OLSKErrorInputNotValid');
-		}
+			return true;
+		},
 
-		if (inputData._OLSKThrottleTimeoutID) {
+		OLSKThrottleTimeoutFor (inputData) {
+			if (!mod.OLSKThrottleIsValid(inputData)) {
+				throw new Error('OLSKErrorInputNotValid');
+			}
+
+			if (inputData._OLSKThrottleTimeoutID) {
+				clearTimeout(inputData._OLSKThrottleTimeoutID);
+			}
+
+			inputData._OLSKThrottleTimeoutID = setTimeout(function () {
+				mod._OLSKThrottleFire(inputData);
+			}, inputData.OLSKThrottleDuration);
+
+			return inputData._OLSKThrottleTimeoutID;
+		},
+
+		OLSKThrottleSkip (inputData) {
+			if (!mod.OLSKThrottleIsValid(inputData)) {
+				throw new Error('OLSKErrorInputNotValid');
+			}
+
 			clearTimeout(inputData._OLSKThrottleTimeoutID);
-		}
+			
+			return mod._OLSKThrottleFire(inputData);
+		},
 
-		inputData._OLSKThrottleTimeoutID = setTimeout(function () {
-			mod._OLSKThrottleFire(inputData);
-		}, inputData.OLSKThrottleDuration);
+		_OLSKThrottleFire (inputData) {
+			delete inputData._OLSKThrottleTimeoutID;
+			
+			return inputData.OLSKThrottleCallback();
+		},
 
-		return inputData._OLSKThrottleTimeoutID;
-	},
+		OLSKThrottleMappedTimeout (param1, param2, param3) {
+			if (typeof param1 !== 'object' || param1 === null) {
+				throw new Error('OLSKErrorInputNotValid');
+			}
 
-	OLSKThrottleSkip (inputData) {
-		if (!mod.OLSKThrottleIsValid(inputData)) {
-			throw new Error('OLSKErrorInputNotValid');
-		}
+			if (typeof param2 !== 'string') {
+				throw new Error('OLSKErrorInputNotValid');
+			}
 
-		clearTimeout(inputData._OLSKThrottleTimeoutID);
-		
-		return mod._OLSKThrottleFire(inputData);
-	},
+			if (!mod.OLSKThrottleIsValid(param3)) {
+				throw new Error('OLSKErrorInputNotValid');
+			}
 
-	_OLSKThrottleFire (inputData) {
-		delete inputData._OLSKThrottleTimeoutID;
-		
-		return inputData.OLSKThrottleCallback();
-	},
+			if (!param1[param2]) {
+				param1[param2] = Object.assign(Object.assign({}, param3), {
+					OLSKThrottleCallback () {
+						mod._OLSKThrottleFire(param3);
 
-	OLSKThrottleMappedTimeout (param1, param2, param3) {
-		if (typeof param1 !== 'object' || param1 === null) {
-			throw new Error('OLSKErrorInputNotValid');
-		}
+						delete param1[param2];
+					},
+				});
+			}
 
-		if (typeof param2 !== 'string') {
-			throw new Error('OLSKErrorInputNotValid');
-		}
+			return param3._OLSKThrottleTimeoutID = mod.OLSKThrottleTimeoutFor(param1[param2]);
+		},
 
-		if (!mod.OLSKThrottleIsValid(param3)) {
-			throw new Error('OLSKErrorInputNotValid');
-		}
+	};
 
-		if (!param1[param2]) {
-			param1[param2] = Object.assign(Object.assign({}, param3), {
-				OLSKThrottleCallback () {
-					mod._OLSKThrottleFire(param3);
+	Object.assign(exports, mod);
 
-					delete param1[param2];
-				},
-			});
-		}
+	Object.assign(exports, mod);
 
-		return param3._OLSKThrottleTimeoutID = mod.OLSKThrottleTimeoutFor(param1[param2]);
-	},
+	Object.defineProperty(exports, '__esModule', {
+		value: true
+	});
 
-};
-
-Object.assign(exports, mod);
+})));
